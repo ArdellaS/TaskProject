@@ -1,0 +1,32 @@
+﻿@using IdentityExample1.Models.AccountViewModels;
+@{
+    ViewData["Title"] = "OwnerTasks";
+    List<UserTasks> Tasks = (List<UserTasks>)ViewData["Tasks"];
+    //List<LoginViewModel> Users = (List<LoginViewModel>)ViewData["Users"];
+}
+
+<h1>Tasks Owned by </h1>
+
+@if (Tasks.Count == 0)
+{
+    <p>You are not assigned any tasks yet.</p>
+}
+
+@foreach (UserTasks t in Tasks)
+{
+    <hr />
+
+    <p>
+        Task# @t.TaskId<br />
+    </p>
+    <p>
+        @t.Description
+    </p>
+    <p>Due: @t.DueDate</p>
+
+    <hr />
+}
+
+
+
+

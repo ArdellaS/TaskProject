@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityExample1.Models;
+using IdentityExample1.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -10,17 +11,15 @@ namespace IdentityExample1.Controllers
 {
     public class TaskController : Controller
     {
-        IConfiguration ConfigRoot;
         private DAL dal;
         public TaskController(IConfiguration config)
         {
-            ConfigRoot = config;
             dal = new DAL(config.GetConnectionString("default"));
         }
 
         public IActionResult Index()
         {
-            var results = dal.GetAllTasks();
+            IEnumerable<UserTasks> results = dal.GetAllTasks();
 
             ViewData["Tasks"] = results;
 
@@ -41,6 +40,18 @@ namespace IdentityExample1.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult OwnerTasks(int id)
+        {
+            LoginViewModel owner = dal.GetUserById(id);
+
+            IEnumerable<UserTasks> tasks = dal.GetTasksByUserId(id);
+            ViewData["Tasks"] = tasks;
+
+            return View(owner);
+        }
+
+
 
     }
 }

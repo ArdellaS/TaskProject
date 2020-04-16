@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using IdentityExample1.Models.AccountViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -33,5 +34,20 @@ namespace IdentityExample1.Models
 
             return conn.Execute(addQuery, t);
         }
+
+        public LoginViewModel GetUserById(int id)
+        {
+            string queryString = "SELECT * FROM IdentityUser WHERE Id = @id";
+
+            return conn.QueryFirstOrDefault<LoginViewModel>(queryString, new { id = id });
+        }
+
+        public IEnumerable<UserTasks> GetTasksByUserId(int id)
+        {
+            string queryString = "SELECT * FROM UserTasks WHERE OwnerId = @id";
+            return conn.Query<UserTasks>(queryString, new { id = id });
+        }
+
+
     }
 }
