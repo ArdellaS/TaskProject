@@ -47,8 +47,42 @@ namespace IdentityExample1.Controllers
 
             IEnumerable<UserTasks> tasks = dal.GetTasksByUserId(id);
             ViewData["Tasks"] = tasks;
+            ViewData["Id"] = id;
 
             return View(owner);
+        }
+
+        public IActionResult MarkComplete(int id)
+        {
+            var t = dal.GetTaskById(id);
+            dal.MarkComplete(t);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteTask(int id)
+        {
+            var t = dal.GetTaskById(id);
+            dal.DeleteTask(t);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult SortByDateAsc(UserTasks t)
+        {
+            IEnumerable<UserTasks> results = dal.SortByDateAsc(t);
+
+            ViewData["Tasks"] = results;
+
+            return View("../Task/Index");
+        }
+        public IActionResult SortByDateDesc(UserTasks t)
+        {
+            IEnumerable<UserTasks> results = dal.SortByDateDesc(t);
+
+            ViewData["Tasks"] = results;
+
+            return View("../Task/Index");
         }
 
 
