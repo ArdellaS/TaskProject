@@ -1,0 +1,30 @@
+﻿@model UserTasks
+@{
+    ViewData["Title"] = "Add Task";
+    
+}
+
+<h1>Tasks</h1>
+
+<form asp-controller="Task" asp-action="AddTask" method="post">
+    <p>
+        @Html.LabelFor(m => m.Description)
+        <textarea id="Description" name="Description" rows="5" cols="40">@Model.Description</textarea>
+    </p>
+
+    <p>
+        @Html.LabelFor(m => m.OwnerId)
+        @Html.EditorFor(m => m.OwnerId)
+    </p>
+
+    <p>
+        @Html.LabelFor(m => m.DueDate)
+        <input id="DueDate" type="date"
+               name="DueDate" value="2018-06-12T19:30"
+               min="2018-06-07T00:00" max="2024-06-14T00:00">
+    </p>
+
+    <p>
+        <input type="submit" />
+    </p>
+</form>

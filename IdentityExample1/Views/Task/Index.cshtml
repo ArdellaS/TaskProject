@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    List<UserTasks> Tasks = (List<UserTasks>)ViewData["Tasks"];
+}
+
+<h1>All Tasks</h1>
+
+@foreach (UserTasks t in Tasks)
+{
+    <hr />
+
+    <p>
+        Task# @t.TaskId<br />
+        Owned By User: <strong>@t.OwnerId</strong>
+    </p>
+    <p>
+        @t.Description
+    </p>
+    <p>Due: @t.DueDate</p>
+
+    <hr />
+}
+
+
