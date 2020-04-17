@@ -4,34 +4,24 @@
 
 @inject SignInManager<DapperIdentityUser> SignInManager
 @inject UserManager<DapperIdentityUser> UserManager
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Search";
     List<UserTasks> Tasks = (List<UserTasks>)ViewData["Tasks"];
 }
 
 <div class="row">
     <div class="col-md-6">
-        <h1>All Tasks</h1>
-
-        <a href="/Task/OwnerTasks/@UserManager.GetUserId(User)/" class="btn btn-primary">Your Tasks</a>
+        <h1>Search</h1>
     </div>
-    <div class="search-form col-md-6">
+    <div class="col-md-6 search-form">
+        <form asp-controller="Task" asp-action="Search" method="post">
+            <input type="search" id="Search" name="Search" />
 
-        <span>Sort By Date: <a href="/Task/SortByDateAsc/">Ascending</a> / <a href="/Task/SortByDateDesc/">Descending</a></span>
-        <div class="search-form">
-            <form asp-controller="Task" asp-action="Search" method="post">
-                <input type="search" id="Search" name="Search" />
-
-                <input type="submit" value="Search" />
-            </form>
-        </div>
+            <input type="submit" value="Search" />
+        </form>
     </div>
 </div>
-<br />
-<hr />
-<h2>Open Tasks</h2>
-
-@TempData["UserMsg"]
 
 @foreach (UserTasks t in Tasks)
 {
@@ -51,7 +41,7 @@
         <a href="/Task/MarkComplete/@t.TaskId" class="btn btn-primary">Mark Complete</a>
         <a href="/Task/Edit/@t.TaskId" class="btn btn-success">Edit Task</a>
         <a href="/Task/DeleteTask/@t.TaskId" class="btn btn-danger delete">Delete</a>
-
+        
         <hr />
     }
 
@@ -79,4 +69,3 @@
     }
 
 }
-

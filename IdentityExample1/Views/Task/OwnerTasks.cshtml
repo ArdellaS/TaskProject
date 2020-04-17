@@ -10,8 +10,20 @@
     List<UserTasks> Tasks = (List<UserTasks>)ViewData["Tasks"];
     //List<LoginViewModel> Users = (List<LoginViewModel>)ViewData["Users"];
 }
+<div class="row">
+    <div class="col-md-6 half">
+        <h1>Tasks Owned by @UserManager.GetUserName(User)</h1>
 
-    <h1>Tasks Owned by @UserManager.GetUserName(User)</h1>
+    </div>
+    <div class="search-form col-md-6 half">
+        <span>Sort By Date: <a href="/Task/SortByDateAsc/">Ascending</a> / <a href="/Task/SortByDateDesc/">Descending</a></span>
+        <form asp-controller="Task" asp-action="Search" method="post">
+            <input type="search" id="Search" name="Search" />
+
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+</div>
 
 @if (Tasks.Count == 0)
 {
@@ -35,6 +47,7 @@
         <p>Due: @t.DueDate</p>
 
         <a href="/Task/MarkComplete/@t.TaskId" class="btn btn-primary">Mark Complete</a>
+        <a href="/Task/Edit/@t.TaskId" class="btn btn-success">Edit Task</a>
         <a href="/Task/DeleteTask/@t.TaskId" class="btn btn-danger delete">Delete</a>
 
         <hr />
