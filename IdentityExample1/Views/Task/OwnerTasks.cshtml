@@ -1,32 +1,81 @@
-﻿@using IdentityExample1.Models.AccountViewModels;
+﻿@model IdentityExample1.Models.AccountViewModels.LoginViewModel
+@using Identity.Dapper.Entities
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<DapperIdentityUser> SignInManager
+@inject UserManager<DapperIdentityUser> UserManager
+
 @{
     ViewData["Title"] = "OwnerTasks";
     List<UserTasks> Tasks = (List<UserTasks>)ViewData["Tasks"];
     //List<LoginViewModel> Users = (List<LoginViewModel>)ViewData["Users"];
 }
+<div class="row">
+    <div class="col-md-6 half">
+        <h1>Tasks Owned by @UserManager.GetUserName(User)</h1>
 
-<h1>Tasks Owned by </h1>
+    </div>
+    <div class="search-form col-md-6 half">
+        <span>Sort By Date: <a href="/Task/SortByDateAsc/">Ascending</a> / <a href="/Task/SortByDateDesc/">Descending</a></span>
+        <form asp-controller="Task" asp-action="Search" method="post">
+            <input type="search" id="Search" name="Search" />
+
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+</div>
 
 @if (Tasks.Count == 0)
 {
     <p>You are not assigned any tasks yet.</p>
 }
 
+<h2>Open Tasks</h2>
 @foreach (UserTasks t in Tasks)
 {
-    <hr />
+    if (t.Complete == 1)
+    {
+        <hr />
 
-    <p>
-        Task# @t.TaskId<br />
-    </p>
-    <p>
-        @t.Description
-    </p>
-    <p>Due: @t.DueDate</p>
+        <p>
+            Task# @t.TaskId<br />
+            Owned By User: <strong>@t.OwnerId</strong>
+        </p>
+        <p>
+            @t.Description
+        </p>
+        <p>Due: @t.DueDate</p>
 
-    <hr />
+        <a href="/Task/MarkComplete/@t.TaskId" class="btn btn-primary">Mark Complete</a>
+        <a href="/Task/Edit/@t.TaskId" class="btn btn-success">Edit Task</a>
+        <a href="/Task/DeleteTask/@t.TaskId" class="btn btn-danger delete">Delete</a>
+
+        <hr />
+    }
+
 }
 
+<h2>Closed Tasks</h2>
+@foreach (UserTasks t in Tasks)
+{
+    if (t.Complete == 0)
+    {
+        <hr />
+
+        <p>
+            Task# @t.TaskId<br />
+            Owned By User: <strong>@t.OwnerId</strong>
+        </p>
+        <p>
+            @t.Description
+        </p>
+        <p>Due: @t.DueDate</p>
+
+        <a href="/Task/DeleteTask/@t.TaskId" class="btn btn-danger">Delete</a>
+
+        <hr />
+    }
+}
 
 
 

@@ -69,3 +69,17 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+/*////////////////////////// Added CSS /////////////////////////////////*/
+
+
+.search-form 
+{
+    text-align: right;
+}
+
+.search-form form {
+    margin-top: 10px;
+}
+

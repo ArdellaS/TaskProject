@@ -48,6 +48,50 @@ namespace IdentityExample1.Models
             return conn.Query<UserTasks>(queryString, new { id = id });
         }
 
+        public UserTasks GetTaskById(int id)
+        {
+            string queryString = "SELECT * FROM UserTasks WHERE TaskId = @id";
+            return conn.QueryFirstOrDefault<UserTasks>(queryString, new { id = id });
+        }
+
+        public int DeleteTask(UserTasks t)
+        {
+            string markcomplete = "DELETE FROM UserTasks WHERE TaskId = @TaskId";
+
+            return conn.Execute(markcomplete, t);
+        }
+        public IEnumerable<UserTasks> SortByDateAsc(UserTasks t)
+        {
+            string queryString = "SELECT * FROM UserTasks ORDER BY DueDate";
+
+            return conn.Query<UserTasks>(queryString);
+        }
+        public IEnumerable<UserTasks> SortByDateDesc(UserTasks t)
+        {
+            string queryString = "SELECT * FROM UserTasks ORDER BY DueDate DESC";
+
+            return conn.Query<UserTasks>(queryString);
+        }
+        public IEnumerable<UserTasks> GetTasksBySearch(string search)
+        {
+            string queryString = "SELECT * FROM UserTasks ";
+            queryString += "where Description like @search ";
+            return conn.Query<UserTasks>(queryString, new { Search = "%" + search + "%" });
+        }
+
+        public int UpdateTaskById(UserTasks t)
+        {
+            string editString = "UPDATE UserTasks SET Description = @Description, DueDate = @DueDate ";
+            editString += "WHERE TaskId = @TaskId";
+            return conn.Execute(editString, t);
+        }
+        public int MarkComplete(UserTasks t)
+        {
+            string markcomplete = "Update UserTasks SET Complete = '0' WHERE TaskId = @TaskId";
+
+            return conn.Execute(markcomplete, t);
+        }
+
 
     }
 }

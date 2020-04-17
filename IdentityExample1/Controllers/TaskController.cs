@@ -47,11 +47,81 @@ namespace IdentityExample1.Controllers
 
             IEnumerable<UserTasks> tasks = dal.GetTasksByUserId(id);
             ViewData["Tasks"] = tasks;
+            ViewData["Id"] = id;
 
             return View(owner);
         }
+ 
 
+        public IActionResult DeleteTask(int id)
+        {
+            var t = dal.GetTaskById(id);
+            dal.DeleteTask(t);
 
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult SortByDateAsc(UserTasks t)
+        {
+            IEnumerable<UserTasks> results = dal.SortByDateAsc(t);
+
+            ViewData["Tasks"] = results;
+
+            return View("../Task/Index");
+        }
+        public IActionResult SortByDateDesc(UserTasks t)
+        {
+            IEnumerable<UserTasks> results = dal.SortByDateDesc(t);
+
+            ViewData["Tasks"] = results;
+
+            return View("../Task/Index");
+        }
+
+        public IActionResult Search(string search)
+        {
+            IEnumerable<UserTasks> results = dal.GetTasksBySearch(search);
+            ViewData["Tasks"] = results;
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            UserTasks task = dal.GetTaskById(id);
+            
+            if (task == null)
+            {
+                return View("NoSuchTask");
+            }
+            else
+            {
+                return View(task);
+            }
+        }
+        [HttpPost]
+        public IActionResult Edit(UserTasks task)
+        {
+            int result = dal.UpdateTaskById(task);
+            if (result == 1)
+            {
+                TempData["UserMsg"] = "Task successfully updated";
+            }
+            else
+            {
+                TempData["UserMsg"] = "Task not updated";
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult MarkComplete(int id)
+        {
+            var t = dal.GetTaskById(id);
+            dal.MarkComplete(t);
+
+            return RedirectToAction("Index");
+        }
 
     }
 }
